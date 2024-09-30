@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - '5000:5000'
+    environment:
+      - DATABASE_URL= "postgres://user:password@db:5432/mydatabase"
+      - FIREBASE_API_KEY= "AIzaSyBj1-PFBRGyyAYA9jUyyveVztT7kYtd57Y"
+      - FIREBASE_AUTH_DOMAIN= "empel-1.firebaseapp.com"
+      - FIREBASE_PROJECT_ID= "empel-1"
+      - FIREBASE_STORAGE_BUCKET= "empel-1.appspot.com"
+      - FIREBASE_MESSAGING_SENDER_ID= "323968550299"
+      - FIREBASE_APP_ID= "1:323968550299:web:99c02c4d0fe81ecc114d3e"
+    depends_on:
+      - db
+
+  db:
+    image: postgres:latest
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydatabase
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:
