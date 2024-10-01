@@ -4,7 +4,7 @@ const serviceAccount = require('firebase-adminsdk-poi3q@empel-1.iam.gserviceacco
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://<your-database-name>.firebaseio.com"
+  databaseURL: "https://mydb.firebaseio.com"
 });
 
 module.exports = admin;
