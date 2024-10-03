@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,13 +7,78 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Sample {
-  id String @id
+model Register {
+  u_id            Int       @id @default(autoincrement())
+  u_name          String
+  d_id            Int
+  email           String    @unique
+  password        String
+  registrationDate DateTime @default(now())
+  role            String    @default("user") // Added role column with default value
+  approved        Int       @default(0)      // Added approved column with default value
+  department      Department @relation(fields: [d_id], references: [d_id])
+  feedback        Feedback[]
+  quizScores      QuizScore[]
+  engagements     Engagement[]
+  discussions     DiscussionParticipation[]
 }
 
-model User {
-  id        Int     @id @default(autoincrement())
-  email     String  @unique
-  name      String?
-  createdAt DateTime @default(now())
+model Department {
+  d_id        Int      @id @default(autoincrement())
+  d_name      String
+  empcount    Int
+  users       Register[] // Added back-reference for relation with Register
+}
+
+model LearningMaterial {
+  m_id          Int       @id @default(autoincrement())
+  title         String
+  content       String
+  type          String
+  c_id          Int
+  course        Course     @relation(fields: [c_id], references: [c_id])
+  engagements    Engagement[]
+}
+
+model Course {
+  c_id             Int               @id @default(autoincrement())
+  c_name           String
+  materials       LearningMaterial[]
+  feedback        Feedback[]
+}
+
+model Engagement {
+  e_id                Int               @id @default(autoincrement())
+  timeSpent          Int
+  u_id               Int
+  c_id               Int
+  register           Register          @relation(fields: [u_id], references: [u_id]) // Changed relation to Register
+  m_id               Int
+  learningMaterial   LearningMaterial  @relation(fields: [m_id], references: [m_id])
+}
+
+model QuizScore {
+  q_id        Int   @id @default(autoincrement())
+  score       Int
+  u_id       Int
+  c_id       Int
+  register    Register @relation(fields: [u_id], references: [u_id]) // Changed relation to Register
+}
+
+model DiscussionParticipation {
+  id        Int   @id @default(autoincrement())
+  c_id     Int
+  comment   String
+  u_id     Int
+  register  Register @relation(fields: [u_id], references: [u_id]) // Changed relation to Register
+}
+
+model Feedback {
+  f_id        Int    @id @default(autoincrement())
+  remarks     String
+  u_id       Int
+  rating      Int
+  register    Register @relation(fields: [u_id], references: [u_id]) // Changed relation to Register
+  c_id        Int
+  course      Course @relation(fields: [c_id], references: [c_id])
 }
