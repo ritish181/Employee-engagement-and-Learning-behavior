@@ -1,6 +1,7 @@
 // src/components/Login.js
 import React, { useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
+import { useNavigate } from 'react-router-dom';
+import "./styles/login.css"
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -15,50 +16,65 @@ const Login = () => {
     });
   };
 
+  const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Replace with your API endpoint for login
-    const response = await fetch('/api/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData),
-    });
 
-    if (response.ok) {
-      // Handle successful login (e.g., redirect to dashboard)
-      alert("Yayy! Login Successful.")
-      console.log('Login Successful');
-      Navigate('/homepage');
-    } else {
-      // Handle login errors
-      console.error('Login failed');
+    try {
+      const response = await fetch('http://localhost:5001/api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        
+        if (data.role === 'admin') {
+          alert("Admin Login Successful.");
+          navigate('/adminHome'); // Redirect to admin page
+        } else if (data.role === 'employee') {
+          alert("Employee Login Successful.");
+          navigate('/employeeHome'); // Redirect to employee page
+        } else {
+          alert("Login failed. Invalid role.");
+        }
+      } else {
+        console.error('Login failed');
+        alert('Invalid email or password.');
+      }
+    } catch (error) {
+      console.error('Error:', error);
     }
   };
 
   return (
-    <div>
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={formData.email}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={formData.password}
-          onChange={handleChange}
-          required
-        />
-        <button type="submit">Login</button>
-      </form>
+    <div className='container'>
+      <div className='form-box'>
+        <h2>Login</h2>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
+          <button type="submit">Login</button>
+        </form>
+      </div>
     </div>
   );
 };

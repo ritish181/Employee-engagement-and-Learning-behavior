@@ -1,0 +1,78 @@
+ /* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body, html {
+    height: 100%;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  /* Admin Page Styling */
+  .admin-page {
+    display: flex;
+    height: 100vh;
+  }
+  
+  /* Sidebar styling */
+  .sidebar {
+    background-color: #343a40;
+    color: white;
+    padding: 1rem;
+    width: 200px;
+    min-height: 100vh; /* Full height */
+  }
+  
+  .sidebar h2 {
+    margin-bottom: 1rem;
+  }
+  
+  .sidebar ul {
+    list-style: none;
+  }
+  
+  .sidebar ul li {
+    margin-bottom: 1rem;
+  }
+  
+  .sidebar ul li a {
+    color: white;
+    text-decoration: none;
+  }
+  
+  .sidebar ul li a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Main Content styling */
+  .content {
+    flex-grow: 1;
+    padding: 2rem;
+    background-color: #f8f9fa;
+  }
+  
+  .card-container {
+    display: flex;
+    gap: 2rem; /* Space between cards */
+  }
+  
+  .card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    flex: 1; /* Allow cards to grow equally */
+    text-align: center;
+  }
+  
+  .card h3 {
+    margin-bottom: 1rem;
+  }
+  
+  .card p {
+    font-size: 2rem; /* Increase font size for numbers */
+    color: #007bff;
+  }
+  

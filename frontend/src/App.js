@@ -2,7 +2,9 @@ import React from "react";
 import {BrowserRouter , Routes, Route} from 'react-router-dom'
 import Register from "./Components/Register"
 import Login from "./Components/Login";
-import EmployeeHome from "./Components/EmployeeHome";
+import Employee from "./Components/EmployeeHome";
+import Admin from "./Components/AdminHome";
+import Requests from "./Components/Requests";
 
 
 const App = () => {
@@ -12,7 +14,9 @@ const App = () => {
       <Route path="/" Component={Register} />
       <Route path="/register" Component={Register} />
       <Route path="/login" Component={Login} />
-      <Route path="/employee-homepage" Component={EmployeeHome} />
+      <Route path="/employeeHome" Component={Employee} />
+      <Route path="/adminHome" Component={ Admin } />
+      <Route path="/requests" Component={Requests} />
     </Routes>
     </BrowserRouter>
   );

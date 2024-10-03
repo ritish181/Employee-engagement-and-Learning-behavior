@@ -1,6 +1,7 @@
 // src/components/Register.js
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import "./styles/register.css"
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -66,7 +67,8 @@ const Register = () => {
   };
 
   return (
-    <div>
+    <div className='container'>
+      <div className='box'>
       <h2>Register</h2>
       <form onSubmit={handleSubmit}>
         <input
@@ -97,6 +99,7 @@ const Register = () => {
           name="d_id"
           value={formData.d_id}
           onChange={handleChange}
+          placeholder= "Department"
           required
         >
           <option value="" disabled>Select Department</option>
@@ -114,6 +117,7 @@ const Register = () => {
         Already registered?{' '}
         <button onClick={handleLoginRedirect}>Login here</button>
       </p>
+      </div>
     </div>
   );
 };

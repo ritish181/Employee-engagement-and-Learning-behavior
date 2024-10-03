@@ -1,49 +1,41 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import './styles/employeeHome.css'; 
 
-const HomePage = () => {
-  const [employeeData, setEmployeeData] = useState(null);
-  const navigate = useNavigate();
-
-  // Fetch employee details on component mount
-  useEffect(() => {
-    const fetchEmployeeData = async () => {
-      try {
-        const response = await fetch('/api/employee', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          credentials: 'include', // to include cookies for authentication
-        });
-
-        const data = await response.json();
-        if (response.ok) {
-          setEmployeeData(data);
-        } else {
-          // Handle error or redirect to login if unauthorized
-          navigate('/login');
-        }
-      } catch (error) {
-        console.error('Failed to fetch employee data:', error);
-      }
-    };
-
-    fetchEmployeeData();
-  }, [navigate]);
-
-  if (!employeeData) {
-    return <p>Loading employee data...</p>;
-  }
-
+const EmployeeHome = () => {
   return (
-    <div>
-      <h1>Welcome, {employeeData.u_name}!</h1>
-      <p>Email: {employeeData.email}</p>
-      <p>Department: {employeeData.department.d_name}</p>
-      {/* Add more details or actions here */}
+    <div className="employee-home">
+      {/* Navbar */}
+      <nav className="navbar">
+        <div className="navbar-brand">Employee Portal</div>
+        <ul className="navbar-links">
+          <li><Link to="/home">Home</Link></li>
+          <li><Link to="/courses">Courses</Link></li>
+          <li><Link to="/feedback">Feedback</Link></li>
+          <li><Link to="/logout">Logout</Link></li>
+        </ul>
+      </nav>
+
+      {/* Layout: Sidebar and Main Content */}
+      <div className="layout">
+        {/* Sidebar */}
+        <aside className="sidebar">
+          <ul>
+            <li><Link to="/dashboard">Dashboard</Link></li>
+            <li><Link to="/courses">Courses</Link></li>
+            <li><Link to="/quizzes">Quizzes</Link></li>
+            <li><Link to="/help">Help</Link></li>
+          </ul>
+        </aside>
+
+        {/* Main Content Area */}
+        <main className="content">
+          <h2>Welcome to the Employee Portal</h2>
+          <p>Select any option from the sidebar or navigate using the top links.</p>
+        </main>
+      </div>
     </div>
   );
 };
 
-export default HomePage;
+export default EmployeeHome;

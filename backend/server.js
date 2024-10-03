@@ -5,6 +5,7 @@ const prisma = require('./config/db');
 const bodyParser =  require('body-parser');
 const registerRoutes = require("./routes/registerRoutes");
 const departmentRoutes = require('./routes/departmentRoutes')
+const requestsRoutes = require('./routes/requestsRoutes')
 
 const app = express();
 const PORT = process.env.PORT || 5001;
@@ -16,6 +17,7 @@ app.use(bodyParser.json())
 app.use(express.urlencoded({extended: false}))
 app.use('/api', registerRoutes);
 app.use('/api', departmentRoutes);
+app.use('/api', requestsRoutes);
 
 app.get('/', (req, res) => {
   res.send('API is running...');
