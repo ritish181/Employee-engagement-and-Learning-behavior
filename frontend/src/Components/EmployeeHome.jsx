@@ -12,7 +12,7 @@ const EmployeeHome = () => {
           <li><Link to="/home">Home</Link></li>
           <li><Link to="/courses">Courses</Link></li>
           <li><Link to="/feedback">Feedback</Link></li>
-          <li><Link to="/logout">Logout</Link></li>
+          <li><Link to="/login">Logout</Link></li>
         </ul>
       </nav>
 

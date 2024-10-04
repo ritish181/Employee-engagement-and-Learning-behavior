@@ -8,9 +8,9 @@ const requestsController = require('../controllers/requestsController');
 router.get('/register', requestsController.getRequests);
 
 // Accept a request
-router.put('/register/:id/accept', requestsController.acceptRequest);
+router.put('/register/:u_id/accept', requestsController.acceptRequest);
 
 // Reject a request
-router.delete('/register/:id/reject', requestsController.rejectRequest);
+router.delete('/register/:u_id/reject', requestsController.rejectRequest);
 
 module.exports = router;

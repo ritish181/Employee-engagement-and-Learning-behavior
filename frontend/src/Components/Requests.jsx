@@ -23,14 +23,15 @@ const Requests = () => {
     fetchRequests();
   }, []);
 
-  const handleAccept = async (id) => {
+  const handleAccept = async (u_id) => {
     try {
-      const response = await fetch(`http://localhost:5001/api/register/${id}/accept`, {
+      const response = await fetch(`http://localhost:5001/api/register/${u_id}/accept`, {
         method: 'PUT',
       });
       if (response.ok) {
         alert('Request accepted');
-        setRequests(requests.filter((request) => request.id !== id));
+        console.log('successfully accepted request');
+        setRequests(requests.filter((request) => request.u_id !== u_id));
       } else {
         console.error('Failed to accept request');
       }
@@ -39,14 +40,14 @@ const Requests = () => {
     }
   };
 
-  const handleReject = async (id) => {
+  const handleReject = async (u_id) => {
     try {
-      const response = await fetch(`http://localhost:5001/api/register/${id}/reject`, {
+      const response = await fetch(`http://localhost:5001/api/register/${u_id}/reject`, {
         method: 'DELETE',
       });
       if (response.ok) {
         alert('Request rejected');
-        setRequests(requests.filter((request) => request.id !== id));
+        setRequests(requests.filter((request) => request.u_id !== u_id));
       } else {
         console.error('Failed to reject request');
       }
@@ -71,13 +72,13 @@ const Requests = () => {
           <tbody>
             {requests.length > 0 ? (
               requests.map((request) => (
-                <tr key={request.id}>
+                <tr key={request.u_id}>
                   <td>{request.u_name}</td>
                   <td>{request.email}</td>
                   <td>{request.d_id}</td>
                   <td>
-                    <button onClick={() => handleAccept(request.id)}>Accept</button>
-                    <button onClick={() => handleReject(request.id)}>Reject</button>
+                    <button onClick={() => handleAccept(request.u_id)}>Accept</button>
+                    <button onClick={() => handleReject(request.u_id)}>Reject</button>
                   </td>
                 </tr>
               ))

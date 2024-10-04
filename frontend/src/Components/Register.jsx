@@ -97,20 +97,21 @@ const Register = () => {
         />
         <select
           name="d_id"
-          value={formData.d_id}
+          value={formData.d_id} // Bound to state
           onChange={handleChange}
-          placeholder= "Department"
           required
         >
-          <option value="" disabled>Select Department</option>
+          {/* Default option manually inserted */}
+          <option value="" >--Select Department--</option>
+          
+          {/* Loop through departments from database */}
           {departments.department && departments.department.map(department => (
-            <>
-              <option key={department.d_id} value={department.d_id}>
-                {department.d_name}
-              </option>
-            </>
+            <option key={department.d_id} value={department.d_id}>
+              {department.d_name}
+            </option>
           ))}
         </select>
+
         <button type="submit">Register</button>
       </form>
       <p>

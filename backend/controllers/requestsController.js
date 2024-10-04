@@ -18,10 +18,10 @@ exports.getRequests = async (req, res) => {
 
 // Accept a request
 exports.acceptRequest = async (req, res) => {
-  const { id } = req.params;
+  const { u_id } = req.params;
   try {
     const updatedRequest = await prisma.register.update({
-      where: { id: parseInt(id) }, // Assuming 'id' is the primary key
+      where: { u_id: parseInt(u_id) }, // Assuming 'id' is the primary key
       data: { approved: 1 },
     });
     res.status(200).json({ message: 'Request accepted', updatedRequest });
@@ -33,10 +33,10 @@ exports.acceptRequest = async (req, res) => {
 
 // Reject a request
 exports.rejectRequest = async (req, res) => {
-  const { id } = req.params;
+  const { u_id } = req.params;
   try {
     await prisma.register.delete({
-      where: { id: parseInt(id) },
+      where: { u_id: parseInt(u_id) },
     });
     res.status(200).json({ message: 'Request rejected' });
   } catch (error) {

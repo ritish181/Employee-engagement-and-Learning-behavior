@@ -20,9 +20,10 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
 
     try {
-      const response = await fetch('http://localhost:5001/api/register', {
+      const response = await fetch('http://localhost:5001/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -36,7 +37,7 @@ const Login = () => {
         if (data.role === 'admin') {
           alert("Admin Login Successful.");
           navigate('/adminHome'); // Redirect to admin page
-        } else if (data.role === 'employee') {
+        } else if (data.role === 'user') {
           alert("Employee Login Successful.");
           navigate('/employeeHome'); // Redirect to employee page
         } else {
@@ -49,6 +50,10 @@ const Login = () => {
     } catch (error) {
       console.error('Error:', error);
     }
+  };
+
+  const handleRegisterRedirect = () => {
+    navigate('/register');
   };
 
   return (
@@ -73,6 +78,10 @@ const Login = () => {
             required
           />
           <button type="submit">Login</button>
+          <p>
+            New User?{' '}
+          <button onClick={handleRegisterRedirect}>Register</button>
+      </p>
         </form>
       </div>
     </div>

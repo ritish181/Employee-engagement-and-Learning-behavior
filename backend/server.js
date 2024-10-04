@@ -6,6 +6,8 @@ const bodyParser =  require('body-parser');
 const registerRoutes = require("./routes/registerRoutes");
 const departmentRoutes = require('./routes/departmentRoutes')
 const requestsRoutes = require('./routes/requestsRoutes')
+const loginRoutes = require('./routes/loginRoutes')
+
 
 const app = express();
 const PORT = process.env.PORT || 5001;
@@ -18,6 +20,7 @@ app.use(express.urlencoded({extended: false}))
 app.use('/api', registerRoutes);
 app.use('/api', departmentRoutes);
 app.use('/api', requestsRoutes);
+app.use('/api', loginRoutes)
 
 app.get('/', (req, res) => {
   res.send('API is running...');

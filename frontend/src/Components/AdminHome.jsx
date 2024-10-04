@@ -18,9 +18,10 @@ const Admin = () => {
           <li><Link to="/courses">Courses</Link></li>
           <li><Link to="/dashboard">Dashboard</Link></li>
           <li><Link to="/requests">Requests</Link></li>
+          <li><Link to="/quizes">Quizes</Link></li>
           <li><Link to="/feedback">Feedback</Link></li>
           <li><Link to="/departments">Departments</Link></li>
-          <li><Link to="/logout">Logout</Link></li>
+          <li><Link to="/login">Logout</Link></li>
         </ul>
       </aside>
 

@@ -5,6 +5,7 @@ import Login from "./Components/Login";
 import Employee from "./Components/EmployeeHome";
 import Admin from "./Components/AdminHome";
 import Requests from "./Components/Requests";
+import AdminCourses from "./Components/AdminCourses";
 
 
 const App = () => {
@@ -17,6 +18,7 @@ const App = () => {
       <Route path="/employeeHome" Component={Employee} />
       <Route path="/adminHome" Component={ Admin } />
       <Route path="/requests" Component={Requests} />
+      <Route path="/adminCourses" Component={AdminCourses} />
     </Routes>
     </BrowserRouter>
   );
