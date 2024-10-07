@@ -21,7 +21,7 @@ const Register = () => {
         const response = await fetch('http://localhost:5001/api/department'); // Adjust the endpoint accordingly
         if (response.ok) {
           const data = await response.json();
-          console.log(data)
+          //console.log(data)
           setDepartments(data);
         } else {
           console.error('Failed to fetch departments');

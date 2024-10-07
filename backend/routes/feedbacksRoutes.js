@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const { adminCourses } = require('../controllers/adminCoursesController');
+const {feedbacks} = require('../controllers/feedbacksController');
 
 // POST route for user registration
-router.post('/adminCourses', adminCourses);
+router.get('/feedbacks', feedbacks);
 
 module.exports = router;

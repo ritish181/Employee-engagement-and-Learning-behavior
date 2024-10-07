@@ -1,0 +1,115 @@
+/* Container for the entire course page */
+.course-container {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  max-width: 1200px;
+  padding: 20px;
+  background-color: #f4f6f9;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Navbar styling */
+.course-navbar {
+  background-color: #4CAF50;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  position: sticky; /* Makes the navbar sticky */
+  top: 0;          /* Sets the sticky position to the top */
+  z-index: 1000;  /* Ensures the navbar stays on top of other elements */
+}
+
+.course-navbar ul {
+  display: flex;
+  justify-content: space-between;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.course-navbar ul li {
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 10px 15px;
+  border-radius: 3px;
+  transition: background-color 0.3s ease;
+}
+
+.course-navbar ul li:hover {
+  background-color: #45a049;
+}
+
+/* Course Card */
+.course-card {
+  background-color: white;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.course-card h2 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+/* Learning Materials */
+.materials-list {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.materials-list h3 {
+  font-size: 20px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.materials-list ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.materials-list li {
+  background-color: #f9f9f9;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-left: 4px solid #4CAF50;
+  border-radius: 3px;
+}
+
+.materials-list li h4 {
+  font-size: 18px;
+  margin: 0 0 5px;
+  color: #333;
+}
+
+.materials-list li p {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+}
+
+/* Hover effect on learning materials */
+.materials-list li:hover {
+  background-color: #f1f1f1;
+  border-left-color: #45a049;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .course-navbar ul {
+    flex-direction: column;
+  }
+
+  .course-navbar ul li {
+    margin-bottom: 10px;
+    text-align: center;
+  }
+}
