@@ -16,9 +16,9 @@ const App = () => {
       <Route path="/register" Component={Register} />
       <Route path="/login" Component={Login} />
       <Route path="/employeeHome" Component={Employee} />
-      <Route path="/adminHome" Component={ Admin } />
+       <Route path="/adminHome" Component={localStorage.getItem("token")? Admin: "" } />
       <Route path="/requests" Component={Requests} />
-      <Route path="/courses" Component={Courses} />
+      <Route path="/courses/:c_id" Component={Courses} /> 
     </Routes>
     </BrowserRouter>
   );

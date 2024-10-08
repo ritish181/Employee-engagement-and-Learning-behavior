@@ -38,7 +38,8 @@ model Course {
   created_at DateTime          @default(now())  // Track creation time
   materials  LearningMaterial[]
   feedback   Feedback[]
-  quizzes    Quiz[]            // One course can have many quizzes
+  quizzes    Quiz[]           // One course can have many quizzes
+  discussion DiscussionParticipation[]
 }
 
 model LearningMaterial {
@@ -105,4 +106,5 @@ model DiscussionParticipation {
   u_id      Int
   created_at DateTime  @default(now())  // Track creation time
   register  Register    @relation(fields: [u_id], references: [u_id])
+  course    Course     @relation(fields: [c_id], references: [c_id])
 }

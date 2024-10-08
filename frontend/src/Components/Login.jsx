@@ -43,6 +43,7 @@ const Login = () => {
         } else {
           alert("Login failed. Invalid role.");
         }
+        localStorage.setItem("token", data.token)
       } else {
         console.error('Login failed');
         alert('Invalid email or password.');

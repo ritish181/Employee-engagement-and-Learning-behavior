@@ -61,7 +61,7 @@ const Admin = () => {
         // Set the filtered feedbacks in state
         setRecentDiscussions(recent5Discussions);
       } catch (error) {
-        console.error('Error fetching recent feedbacks:', error);
+        console.error('Error fetching recent discussions:', error);
       }
     };
   
@@ -178,6 +178,8 @@ const Admin = () => {
         </tbody>
       </table>
     </div>
+          
+    <button>Back to top</button>
       </main>
     </div>
   );

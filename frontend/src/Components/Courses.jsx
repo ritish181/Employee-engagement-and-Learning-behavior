@@ -1,64 +1,175 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import './styles/courses.css';  // Add styling
+import { Link, useParams } from 'react-router-dom';
+import './styles/courses.css';
 
-const Courses = ({ c_id }) => {
-  const [courses, setCourse] = useState(null);  // To store course data
-  const [materials, setMaterials] = useState([]);  // To store learning materials
-  const navigate = useNavigate();
+const Courses = () => {
+  const { c_id } = useParams();
 
-  // Fetch course and materials data
+  const [course, setCourse] = useState(null);
+  const [feedbacks, setRecentFeedbacks] = useState([]);
+  const [discussions, setRecentDiscussions] = useState([]);
+  const [expandedModule, setExpandedModule] = useState(null);
+
+  // Fetch the course details from the API
   useEffect(() => {
-    fetch(`http://localhost:5001/api/courses/${c_id}`)  // Adjust endpoint as per your backend
-      .then((response) => response.json())
-      .then((data) => {
-        setCourse(data.courses);
-        setMaterials(data.materials);
-      })
-      .catch((error) => console.error('Error fetching course:', error));
+    const fetchCourse = async () => {
+      try {
+        const response = await fetch(`http://localhost:5001/api/courses/${c_id}`);
+        const data = await response.json();
+        setCourse(data);
+      } catch (error) {
+        console.error('Error fetching courses:', error);
+      }
+    };
+    fetchCourse();
   }, [c_id]);
 
-  const handleLogout = () => {
-    // Implement logout logic
-    navigate('/login');  // Redirect to login page
+  // Fetch recent feedbacks
+  useEffect(() => {
+    const recentFeedbacks = async () => {
+      try {
+        const response = await fetch('http://localhost:5001/api/feedbacks');
+        const data = await response.json();
+        const sortedFeedbacks = data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+        const recent5Feedbacks = sortedFeedbacks.slice(0, 5);
+        setRecentFeedbacks(recent5Feedbacks);
+      } catch (error) {
+        console.error('Error fetching recent feedbacks:', error);
+      }
+    };
+    recentFeedbacks();
+  }, []);
+
+  // Fetch recent discussions
+  useEffect(() => {
+    const recentDiscussions = async () => {
+      try {
+        const response = await fetch('http://localhost:5001/api/discussions');
+        const data = await response.json();
+        const sortedDiscussions = data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+        const recent5Discussions = sortedDiscussions.slice(0, 5);
+        setRecentDiscussions(recent5Discussions);
+      } catch (error) {
+        console.error('Error fetching recent discussions:', error);
+      }
+    };
+    recentDiscussions();
+  }, []);
+
+  // Toggle module content visibility
+  const toggleModule = (m_id) => {
+    setExpandedModule(expandedModule === m_id ? null : m_id);
   };
 
   return (
-    <div className="course-container">
+    <div className="course-page">
       {/* Navbar */}
-      <nav className="course-navbar">
-        <ul>
-          <li onClick={() => navigate(`/courses/${c_id}/modules`)}>Modules</li>
-          <li onClick={() => navigate(`/courses/${c_id}/quiz`)}>Quiz</li>
-          <li onClick={() => navigate(`/courses/${c_id}/discussions`)}>Discussions</li>
-          <li onClick={() => navigate(`/courses/${c_id}/feedback`)}>Feedback</li>
-          <li onClick={handleLogout}>Logout</li>
+      <nav className="navbar">
+        <h2>Courses</h2>
+        <ul className="nav-links">
+          <li><Link to="/">Home</Link></li>
+          <li><Link to="/">Courses</Link></li>
+          <li><Link to="#">Feedback</Link></li>
+          <li><Link to="#">Discussions</Link></li>
+          <li><Link to="/login">Logout</Link></li>
         </ul>
       </nav>
 
-      {/* Main Course Content */}
-      <div className="course-content">
-        {courses && (
-          <div className="course-card">
-            <h2>{courses.c_name}</h2>
+      {/* Main Content */}
+      <main className="content">
+        {/* COURSE COMPLETION STATUS */}
+        {/* <div>
+          <h1>Course Completion Status</h1>
+          <p>{course ? `Completed: ${course.completionStatus}%` : 'Loading...'}</p>
+        </div> */}
+
+        {/* MODULES */}
+        <div>
+          <h1>Modules</h1>
+          <div className="modules-container">
+            {course && course.materials ? (
+              course.materials.map((material) => (
+                <div key={material.m_id} className="module-item">
+                  <div
+                    className="module-title"
+                    onClick={() => toggleModule(material.m_id)}
+                  >
+                    {material.title}
+                  </div>
+
+                  {/* Toggle visibility of content */}
+                  {expandedModule === material.m_id && (
+                    <div className="module-content">
+                      <p>Type: {material.type}</p>
+                      <p>Content: {material.content}</p>
+                    </div>
+                  )}
+                </div>
+              ))
+            ) : (
+              <p>Loading modules...</p>
+            )}
           </div>
-        )}
-        <div className="materials-list">
-          <h3>Learning Materials</h3>
-          {materials.length > 0 ? (
-            <ul>
-              {materials.map((material) => (
-                <li key={material.m_id}>
-                  <h4>{material.title}</h4>
-                  <p>{material.content}</p>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>No learning materials available for this course.</p>
-          )}
         </div>
-      </div>
+
+        {/* FEEDBACKS */}
+        <div className="feedbacks-table-container">
+          <h1>FEEDBACKS</h1>
+          <table className="feedbacks-table">
+            <thead>
+              <tr>
+                <th>Feedback ID</th>
+                <th>Course Name</th>
+                <th>User Name</th>
+                <th>Remarks</th>
+                <th>Rating</th>
+                <th>Submitted On</th>
+              </tr>
+            </thead>
+            <tbody>
+              {feedbacks.map(feedback => (
+                <tr key={feedback.f_id}>
+                  <td>{feedback.f_id}</td>
+                  <td>{feedback.course.c_name}</td>
+                  <td>{feedback.register.u_name}</td>
+                  <td>{feedback.remarks}</td>
+                  <td>{feedback.rating}</td>
+                  <td>{new Date(feedback.created_at).toLocaleDateString()}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* DISCUSSIONS */}
+        <div>
+          <h1>Recent Discussions</h1>
+          <table className="discussion-table">
+            <thead>
+              <tr>
+                <th>Discussion ID</th>
+                <th>User Name</th>
+                <th>Course Name</th>
+                <th>Comment</th>
+                <th>Created At</th>
+              </tr>
+            </thead>
+            <tbody>
+              {discussions.map((discussion) => (
+                <tr key={discussion.id}>
+                  <td>{discussion.id}</td>
+                  <td>{discussion.register.u_name}</td>
+                  <td>{discussion.course.c_name}</td>
+                  <td>{discussion.comment}</td>
+                  <td>{new Date(discussion.created_at).toLocaleString()}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+          
+        <button>Back to top</button>
+      </main>
     </div>
   );
 };
