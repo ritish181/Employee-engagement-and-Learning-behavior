@@ -15,8 +15,9 @@ const getAllCourses = async (req, res) => {
 // Get a single course with its learning materials
 const getCourseById = async (req, res) => {
   const { c_id } = req.params; // Expecting courseId in the request parameters
+  
   try {
-    const course = await prisma.course.findUnique({
+    const course = await prisma.course.findMany({
       where: {
         c_id: parseInt(c_id),
       },
