@@ -1,0 +1,121 @@
+/* styles/courses.module.css */
+
+.coursePage {
+  font-family: Arial, sans-serif;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
+
+.navbar {
+  background-color: #343a40; /* Dark navbar */
+  color: white;
+  padding: 15px;
+}
+
+.navLinks {
+  display: flex;
+  list-style-type: none;
+  justify-content: space-between;
+  margin: 0;
+  padding: 0;
+}
+
+.navLinks li {
+  margin-right: 20px;
+}
+
+.navLinks a {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+  padding: 8px 12px;
+  display: inline-block;
+}
+
+.navLinks a:hover {
+  background-color: #495057;
+  border-radius: 4px;
+}
+
+.courseNameCard {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.content {
+  padding: 40px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.modulesSection {
+  margin-top: 40px;
+}
+
+.modulesContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.moduleItem {
+  background-color: #ffffff;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.moduleTitle {
+  font-weight: bold;
+  color: #007bff;
+}
+
+.moduleContent {
+  margin-top: 10px;
+}
+
+.feedbacksTableContainer,
+.discussionTableContainer {
+  margin-top: 40px;
+}
+
+.feedbacksTable,
+.discussionTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.feedbacksTable th,
+.feedbacksTable td,
+.discussionTable th,
+.discussionTable td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: center;
+}
+
+.feedbacksTable th,
+.discussionTable th {
+  background-color: #007bff;
+  color: white;
+}
+
+.feedbacksTable td,
+.discussionTable td {
+  background-color: #f8f9fa;
+}
+
+button {
+  margin-top: 20px;
+  padding: 10px 15px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #218838;
+}

@@ -1,6 +1,6 @@
 // src/components/Requests.jsx
 import React, { useEffect, useState } from 'react';
-import './styles/requests.css'; // Ensure you have a CSS file for styling
+import styles from './styles/requests.module.css'; // Import the module CSS
 
 const Requests = () => {
   const [requests, setRequests] = useState([]);
@@ -23,15 +23,15 @@ const Requests = () => {
     fetchRequests();
   }, []);
 
-  const handleAccept = async (u_id) => {
+  const handleAccept = async (uId) => {
     try {
-      const response = await fetch(`http://localhost:5001/api/register/${u_id}/accept`, {
+      const response = await fetch(`http://localhost:5001/api/register/${uId}/accept`, {
         method: 'PUT',
       });
       if (response.ok) {
         alert('Request accepted');
-        console.log('successfully accepted request');
-        setRequests(requests.filter((request) => request.u_id !== u_id));
+        console.log('Successfully accepted request');
+        setRequests(requests.filter((request) => request.u_id !== uId));
       } else {
         console.error('Failed to accept request');
       }
@@ -40,14 +40,14 @@ const Requests = () => {
     }
   };
 
-  const handleReject = async (u_id) => {
+  const handleReject = async (uId) => {
     try {
-      const response = await fetch(`http://localhost:5001/api/register/${u_id}/reject`, {
+      const response = await fetch(`http://localhost:5001/api/register/${uId}/reject`, {
         method: 'DELETE',
       });
       if (response.ok) {
         alert('Request rejected');
-        setRequests(requests.filter((request) => request.u_id !== u_id));
+        setRequests(requests.filter((request) => request.u_id !== uId));
       } else {
         console.error('Failed to reject request');
       }
@@ -57,9 +57,9 @@ const Requests = () => {
   };
 
   return (
-    <div className="requests-container">
+    <div className={styles.requestsPage}>
       <h2>User Requests</h2>
-      <div className="requests-box">
+      <div className={styles.requestsBox}>
         <table>
           <thead>
             <tr>

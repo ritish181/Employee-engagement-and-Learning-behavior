@@ -1,7 +1,7 @@
 // src/components/Login.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import "./styles/login.css"
+import styles from './styles/login.module.css'; // Import the CSS module
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -20,7 +20,6 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
 
     try {
       const response = await fetch('http://localhost:5001/api/login', {
@@ -33,7 +32,7 @@ const Login = () => {
 
       if (response.ok) {
         const data = await response.json();
-        
+
         if (data.role === 'admin') {
           alert("Admin Login Successful.");
           navigate('/adminHome'); // Redirect to admin page
@@ -43,7 +42,9 @@ const Login = () => {
         } else {
           alert("Login failed. Invalid role.");
         }
-        localStorage.setItem("token", data.token)
+        console.log(data)
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("role", data.role)
       } else {
         console.error('Login failed');
         alert('Invalid email or password.');
@@ -58,8 +59,8 @@ const Login = () => {
   };
 
   return (
-    <div className='container'>
-      <div className='form-box'>
+    <div className={styles.container}>
+      <div className={styles.formBox}>
         <h2>Login</h2>
         <form onSubmit={handleSubmit}>
           <input
@@ -81,8 +82,8 @@ const Login = () => {
           <button type="submit">Login</button>
           <p>
             New User?{' '}
-          <button onClick={handleRegisterRedirect}>Register</button>
-      </p>
+            <button type="button" onClick={handleRegisterRedirect}>Register</button>
+          </p>
         </form>
       </div>
     </div>

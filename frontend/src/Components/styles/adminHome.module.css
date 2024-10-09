@@ -1,0 +1,148 @@
+/* styles/adminHome.module.css */
+
+.adminPage {
+  font-family: Arial, sans-serif;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
+
+.navbar {
+  background-color: #343a40; /* Dark navbar */
+  color: white;
+  padding: 15px;
+}
+
+.navLinks {
+  display: flex;
+  list-style-type: none;
+  justify-content: space-between;
+  margin: 0;
+  padding: 0;
+}
+
+.navLinks li {
+  margin-right: 20px;
+}
+
+.navLinks a {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+  padding: 8px 12px;
+  display: inline-block;
+}
+
+.navLinks a:hover {
+  background-color: #495057;
+  border-radius: 4px;
+}
+
+.content {
+  padding: 40px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.cardContainer {
+  display: flex;
+  gap: 20px;
+  justify-content: space-around;
+  margin-bottom: 40px;
+}
+
+.card {
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 20px;
+  width: 250px;
+  text-align: center;
+}
+
+.card h3 {
+  margin-bottom: 15px;
+  font-size: 18px;
+  color: #333;
+}
+
+.courseCardContainer {
+  margin-top: 40px;
+}
+
+.courseCardContainer h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+}
+
+.courseLink {
+  text-decoration: none;
+  color: #007bff;
+  font-weight: bold;
+}
+
+.courseLink:hover {
+  text-decoration: underline;
+}
+
+.feedbacksTableContainer {
+  margin-top: 40px;
+}
+
+.feedbacksTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.feedbacksTable th, .feedbacksTable td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: center;
+}
+
+.feedbacksTable th {
+  background-color: #007bff;
+  color: white;
+  font-size: 16px;
+}
+
+.feedbacksTable td {
+  background-color: #f8f9fa;
+}
+
+.discussionTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 40px;
+}
+
+.discussionTable th, .discussionTable td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: center;
+}
+
+.discussionTable th {
+  background-color: #6c757d;
+  color: white;
+}
+
+.discussionTable td {
+  background-color: #ffffff;
+}
+
+button {
+  margin-top: 20px;
+  padding: 10px 15px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #218838;
+}

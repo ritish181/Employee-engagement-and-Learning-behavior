@@ -1,7 +1,7 @@
 // src/components/Register.js
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import "./styles/register.css"
+import styles from './styles/register.module.css'; // Import the CSS module
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -21,7 +21,6 @@ const Register = () => {
         const response = await fetch('http://localhost:5001/api/department'); // Adjust the endpoint accordingly
         if (response.ok) {
           const data = await response.json();
-          //console.log(data)
           setDepartments(data);
         } else {
           console.error('Failed to fetch departments');
@@ -67,57 +66,59 @@ const Register = () => {
   };
 
   return (
-    <div className='container'>
-      <div className='box'>
-      <h2>Register</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="u_name"
-          placeholder="Name"
-          value={formData.u_name}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={formData.email}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={formData.password}
-          onChange={handleChange}
-          required
-        />
-        <select
-          name="d_id"
-          value={formData.d_id} // Bound to state
-          onChange={handleChange}
-          required
-        >
-          {/* Default option manually inserted */}
-          <option value="" >--Select Department--</option>
-          
-          {/* Loop through departments from database */}
-          {departments.department && departments.department.map(department => (
-            <option key={department.d_id} value={department.d_id}>
-              {department.d_name}
-            </option>
-          ))}
-        </select>
-
-        <button type="submit">Register</button>
-      </form>
-      <p>
-        Already registered?{' '}
-        <button onClick={handleLoginRedirect}>Login here</button>
-      </p>
+    <div className={styles.container}>
+      <div className={styles.box}>
+        <h2 className={styles.h2}>Register</h2>
+        <form className={styles.form} onSubmit={handleSubmit}>
+          <input
+            className={styles.input}
+            type="text"
+            name="u_name"
+            placeholder="Name"
+            value={formData.u_name}
+            onChange={handleChange}
+            required
+          />
+          <input
+            className={styles.input}
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
+          <input
+            className={styles.input}
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
+          <select
+            className={styles.select}
+            name="d_id"
+            value={formData.d_id} // Bound to state
+            onChange={handleChange}
+            required
+          >
+            {/* Default option manually inserted */}
+            <option value="">--Select Department--</option>
+            {/* Loop through departments from database */}
+            {departments.department && departments.department.map(department => (
+              <option key={department.d_id} value={department.d_id}>
+                {department.d_name}
+              </option>
+            ))}
+          </select>
+          <button className={`${styles.button} ${styles.submitButton}`} type="submit">Register</button>
+        </form>
+        <p className={styles.p}>
+          Already registered?{' '}
+          <button onClick={handleLoginRedirect}>Login here</button>
+        </p>
       </div>
     </div>
   );

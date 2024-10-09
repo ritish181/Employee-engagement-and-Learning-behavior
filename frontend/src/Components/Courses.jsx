@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import './styles/courses.css';
+import styles from './styles/courses.module.css'; // Import CSS module
 
 const Courses = () => {
   const { c_id } = useParams();
-
   const [course, setCourse] = useState(null);
   const [feedbacks, setRecentFeedbacks] = useState([]);
   const [discussions, setRecentDiscussions] = useState([]);
@@ -16,7 +15,7 @@ const Courses = () => {
       try {
         const response = await fetch(`http://localhost:5001/api/courses/${c_id}`);
         const data = await response.json();
-        setCourse(data);
+        setCourse(data[0]);
       } catch (error) {
         console.error('Error fetching courses:', error);
       }
@@ -28,7 +27,7 @@ const Courses = () => {
   useEffect(() => {
     const recentFeedbacks = async () => {
       try {
-        const response = await fetch('http://localhost:5001/api/feedbacks');
+        const response = await fetch(`http://localhost:5001/api/feedbacks/${c_id}`);
         const data = await response.json();
         const sortedFeedbacks = data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
         const recent5Feedbacks = sortedFeedbacks.slice(0, 5);
@@ -38,13 +37,13 @@ const Courses = () => {
       }
     };
     recentFeedbacks();
-  }, []);
+  }, [c_id]);
 
   // Fetch recent discussions
   useEffect(() => {
     const recentDiscussions = async () => {
       try {
-        const response = await fetch('http://localhost:5001/api/discussions');
+        const response = await fetch(`http://localhost:5001/api/discussions/${c_id}`);
         const data = await response.json();
         const sortedDiscussions = data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
         const recent5Discussions = sortedDiscussions.slice(0, 5);
@@ -54,19 +53,23 @@ const Courses = () => {
       }
     };
     recentDiscussions();
-  }, []);
+  }, [c_id]);
 
-  // Toggle module content visibility
+  // Toggle module visibility
   const toggleModule = (m_id) => {
-    setExpandedModule(expandedModule === m_id ? null : m_id);
+    if (expandedModule === m_id) {
+      setExpandedModule(null); // Collapse if already expanded
+    } else {
+      setExpandedModule(m_id); // Expand selected module
+    }
   };
 
   return (
-    <div className="course-page">
+    <div className={styles.coursePage}>
       {/* Navbar */}
-      <nav className="navbar">
+      <nav className={styles.navbar}>
         <h2>Courses</h2>
-        <ul className="nav-links">
+        <ul className={styles.navLinks}>
           <li><Link to="/">Home</Link></li>
           <li><Link to="/">Courses</Link></li>
           <li><Link to="#">Feedback</Link></li>
@@ -75,23 +78,28 @@ const Courses = () => {
         </ul>
       </nav>
 
+      {/* Course Name as a Card */}
+      <div className={styles.courseNameCard}>
+        <h1>{course ? course.c_name : 'Loading course...'}</h1>
+      </div>
+
       {/* Main Content */}
-      <main className="content">
+      <main className={styles.content}>
         {/* COURSE COMPLETION STATUS */}
-        {/* <div>
+        <div>
           <h1>Course Completion Status</h1>
           <p>{course ? `Completed: ${course.completionStatus}%` : 'Loading...'}</p>
-        </div> */}
+        </div>
 
         {/* MODULES */}
-        <div>
-          <h1>Modules</h1>
-          <div className="modules-container">
+        <div className={styles.modulesSection}>
+          <h2>Modules</h2>
+          <div className={styles.modulesContainer}>
             {course && course.materials ? (
               course.materials.map((material) => (
-                <div key={material.m_id} className="module-item">
+                <div key={material.m_id} className={styles.moduleItem}>
                   <div
-                    className="module-title"
+                    className={styles.moduleTitle}
                     onClick={() => toggleModule(material.m_id)}
                   >
                     {material.title}
@@ -99,9 +107,14 @@ const Courses = () => {
 
                   {/* Toggle visibility of content */}
                   {expandedModule === material.m_id && (
-                    <div className="module-content">
+                    <div className={styles.moduleContent}>
                       <p>Type: {material.type}</p>
-                      <p>Content: {material.content}</p>
+                      <p>
+                        Content:{' '}
+                        <a href={material.content} target="_blank" rel="noreferrer">
+                          {material.content}
+                        </a>
+                      </p>
                     </div>
                   )}
                 </div>
@@ -113,9 +126,11 @@ const Courses = () => {
         </div>
 
         {/* FEEDBACKS */}
-        <div className="feedbacks-table-container">
+        <div className={styles.feedbacksTableContainer}>
           <h1>FEEDBACKS</h1>
-          <table className="feedbacks-table">
+          {console.log(localStorage.getItem('role'))}
+          {localStorage.getItem('role') == "admin"? <button>Add course</button>: " "}
+          <table className={styles.feedbacksTable}>
             <thead>
               <tr>
                 <th>Feedback ID</th>
@@ -144,7 +159,7 @@ const Courses = () => {
         {/* DISCUSSIONS */}
         <div>
           <h1>Recent Discussions</h1>
-          <table className="discussion-table">
+          <table className={styles.discussionTable}>
             <thead>
               <tr>
                 <th>Discussion ID</th>
@@ -167,8 +182,8 @@ const Courses = () => {
             </tbody>
           </table>
         </div>
-          
-        <button>Back to top</button>
+
+        <button onClick={() => console.log("Button clicked")}>Sample Button</button>
       </main>
     </div>
   );
