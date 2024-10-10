@@ -18,12 +18,12 @@ const loginUser = async (req, res) => {
         if (user.password !== password) {
             return res.status(401).json({ message: 'Invalid email or password' });
         }
-        console.log(user)
+        console.log("login user" + user)
         // If login is successful, return the user's role
         const token = jwt.sign({ userId: user.u_id, role: user.role }, 'ritish', {
             expiresIn: '1h',
         });
-        res.status(200).json({ token, role: user.role });
+        res.status(200).json({ token, role: user.role, u_id: user.u_id });
     } catch (error) {
         console.error('Error during login:', error);
         return res.status(500).json({ message: 'Server error' });

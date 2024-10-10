@@ -1,12 +1,14 @@
 // routes/coursesRoutes.js
 const express = require('express');
 const router = express.Router();
-const { getCourseById, getAllCourses,createCourse,userEngagement } = require('../controllers/coursesController');
+const { getCourseById, getAllCourses,createCourse,userEngagement, getEnrolledCourses } = require('../controllers/coursesController');
 const verifyToken = require('../middlewares/authentication');
 const authentication = require('../middlewares/authentication')
+
 // Route to get a course by ID along with learning materials
 router.get('/courses/:c_id', getCourseById);
 router.get('/courses', getAllCourses);
+router.get('/coursesEnrolled/:u_id', getEnrolledCourses);
 router.post('/admin/courses/create',createCourse );
 
 router.post('/engagement/module',userEngagement );

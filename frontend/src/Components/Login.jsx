@@ -45,6 +45,7 @@ const Login = () => {
         console.log(data)
         localStorage.setItem("token", data.token);
         localStorage.setItem("role", data.role)
+        localStorage.setItem("u_id", data.u_id)
       } else {
         console.error('Login failed');
         alert('Invalid email or password.');

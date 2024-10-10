@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import axios from 'axios';
+import { Navigate } from 'react-router-dom';
 
 const CreateCourse = () => {
   const [courseName, setCourseName] = useState('');
@@ -29,7 +30,6 @@ const CreateCourse = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
 
     const courseData = {
       c_name: courseName,
@@ -133,7 +133,7 @@ const CreateCourse = () => {
       ))}
       <button type="button" onClick={addQuiz}>Add Quiz</button>
       
-      <button type="submit">Create Course</button>
+      <button type="submit" >Create Course</button>
     </form>
   );
 };

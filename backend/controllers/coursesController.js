@@ -12,6 +12,29 @@ const getAllCourses = async (req, res) => {
   }
 };
 
+// Get Enrolled Courses
+
+const getEnrolledCourses = async (req, res) => {
+  const { u_id } = req.params; // Get the u_id from the request parameters
+
+  try {
+    const courses = await prisma.courseEnrollment.findMany({
+      where: {
+        u_id: parseInt(u_id), // Filter by the specific user ID
+      },
+      include: {
+        course: true,      // Include course details
+        register: true,    // Include user details (from the 'Register' table)
+      },
+    });
+    res.status(200).json(courses); // Send the fetched courses as the response
+  } catch (error) {
+    console.error("Error fetching enrolled courses:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+
 // Get a single course with its learning materials
 const getCourseById = async (req, res) => {
   const { c_id } = req.params; // Expecting courseId in the request parameters
@@ -99,5 +122,6 @@ module.exports = {
   getAllCourses,
   getCourseById,
   createCourse,
-  userEngagement
+  userEngagement,
+  getEnrolledCourses
 };

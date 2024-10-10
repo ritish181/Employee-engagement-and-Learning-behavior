@@ -10,6 +10,7 @@ const loginRoutes = require('./routes/loginRoutes');
 const coursesRoutes = require('./routes/coursesRoutes');
 const feedbacksRoutes = require('./routes/feedbacksRoutes');
 const discussionsRoutes = require('./routes/discussionsRoutes');
+const enrollRoutes = require('./routes/enrollRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5001;
@@ -26,6 +27,7 @@ app.use('/api', loginRoutes);
 app.use('/api', coursesRoutes);
 app.use('/api', feedbacksRoutes);
 app.use('/api', discussionsRoutes);
+app.use('/api', enrollRoutes);
 
 app.get('/', (req, res) => {
   res.send('API is running...');

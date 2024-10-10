@@ -95,8 +95,8 @@ const Courses = () => {
       <nav className={styles.navbar}>
         <h2>Courses</h2>
         <ul className={styles.navLinks}>
-          <li><Link to="/">Home</Link></li>
-          <li><Link to="/">Courses</Link></li>
+          <li><Link to="#">Home</Link></li>
+          <li><Link to="/employeeHome">Courses</Link></li>
           <li><Link to="#">Feedback</Link></li>
           <li><Link to="#">Discussions</Link></li>
           <li><Link to="/login">Logout</Link></li>

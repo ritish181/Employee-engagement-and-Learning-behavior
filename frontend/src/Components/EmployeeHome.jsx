@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './styles/adminHome.module.css'; // Import the CSS module
 
-const Admin = () => {
+const EmployeeHome = () => {
+  const [u_id, setu_id] = useState()
   const [courses, setCourses] = useState([]); // State to store the fetched courses
   const [numEmployees, setNumEmployees] = useState(0);
   const [numRequests, setNumRequests] = useState(0);
   const [recentFeedbacks, setRecentFeedbacks] = useState([]); // state to store recent feedbacks
   const [recentDiscussions, setRecentDiscussions] = useState([]);
+  const [enrolledCourses, setEnrolledCourses] = useState([]);
 
   // Fetch courses from the API
   useEffect(() => {
@@ -22,7 +24,27 @@ const Admin = () => {
     };
 
     fetchCourses();
+    setu_id(localStorage.getItem("u_id"))
   }, []);
+
+  // Fetch Enrolled courses from the API
+  useEffect(() => {
+    const fetchEnrolledCourses = async () => {
+      try {
+        const response = await fetch(`http://localhost:5001/api/coursesEnrolled/${u_id}`);
+        const data = await response.json();
+        
+        console.log('Fetched Enrolled Courses:', data); // Log the fetched data
+        setEnrolledCourses(data); // Set state with the fetched data
+      } catch (error) {
+        console.error('Error fetching courses:', error);
+      }
+    };
+
+      if(u_id){
+        fetchEnrolledCourses(); // Only fetch if u_id is defined
+      }
+  }, [u_id]);
 
   useEffect(() => {
     const recentFeedbacks = async () => {
@@ -67,6 +89,43 @@ const Admin = () => {
   
     recentDiscussions(); // Call the function to fetch and filter discussions
   }, []); 
+
+  // Enrollment button handler
+  const handleEnroll = async (courseId) => {
+    try {
+
+      console.log(`sending enroll request to sever for course: ${courseId}`)
+      
+      const response = await fetch('http://localhost:5001/api/enroll', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          c_id: courseId,
+          u_id: u_id,
+        }),
+      });
+      
+      console.log(`response recieved from server with status code ${response.status}`)
+  
+      if (response.ok) {
+        // Update local state to reflect the enrollment
+        const updatedCourses = courses.map(course => {
+          if (course.c_id === courseId) {
+            return { ...course, enrolled: true }; // Update the enrolled status
+          }
+          return course;
+        });
+  
+        setCourses(updatedCourses); // Update the courses state
+      } else {
+        console.error('Failed to enroll in course:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error enrolling in course:', error);
+    }
+  };
 
   return (
     <div className={styles.adminPage}>
@@ -114,9 +173,35 @@ const Admin = () => {
           {courses.map(course => (
             <div className={styles.card} key={course.c_id}>
               <h3>{course.c_name}</h3>
-              <Link to={`/courses/${course.c_id}`} className={styles.courseLink}>View Course</Link> {/* Redirect to course page */}
+              <Link to={`/courses/${course.c_id}`} className={styles.courseLink}>View Course</Link>
+              <button 
+                className={styles.enrollButton} 
+                onClick={() => handleEnroll(course.c_id)}
+                disabled={course.enrolled} // Optionally disable the button if already enrolled
+              >
+              {course.enrolled ? 'Enrolled' : 'Enroll'}
+              </button>
             </div>
           ))}
+        </div>
+        
+        {/* ENROLLED COURSES */}
+        <div className={styles.enrolledCoursesContainer}>
+          <h1>Enrolled Courses</h1>
+          {enrolledCourses.length > 0 ? (
+            enrolledCourses.map((enrollment) => (
+              <div className={styles.enrolledCard} key={enrollment.id}>
+                <h3>{enrollment.course.c_name}</h3>
+                <p>Employee: {enrollment.register.u_name}</p>
+                <p>Enrollment Date: {new Date(enrollment.created_at).toLocaleDateString()}</p>
+                <Link to={`/courses/${enrollment.course.c_id}`} className={styles.courseLink}>
+                  View Course
+                </Link>
+              </div>
+            ))
+          ) : (
+            <p>No enrolled courses found.</p>  // Handle case where no courses are enrolled
+          )}
         </div>
 
         {/* FEEDBACKS */}
@@ -185,4 +270,4 @@ const Admin = () => {
   );
 };
 
-export default Admin;
+export default EmployeeHome;
