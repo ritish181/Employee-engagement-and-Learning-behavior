@@ -8,6 +8,8 @@ try {
      const decoded = jwt.verify(token, 'ritish');
     console.log(decoded)
  req.user = decoded;
+ console.log(req.user);
+ 
  next();
  } catch (error) {
     console.log(error)
