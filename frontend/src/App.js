@@ -7,6 +7,7 @@ import Admin from "./Components/AdminHome";
 import Requests from "./Components/Requests";
 import Courses from "./Components/Courses";
 import ProtectedRoute from "./Components/Protectedroute";
+import CreateCourse from "./Components/CreateCourse";
 
 
 const App = () => {
@@ -25,6 +26,10 @@ const App = () => {
         <Route 
           path="/adminHome" 
           element={<ProtectedRoute element={<Admin />} />} 
+        />
+        <Route 
+          path="/admin/create" 
+          element={<ProtectedRoute element={<CreateCourse />} />} 
         />
         <Route 
           path="/requests" 

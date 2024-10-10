@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import styles from './styles/courses.module.css'; // Import CSS module
+import axios from 'axios';
 
 const Courses = () => {
   const { c_id } = useParams();
@@ -54,13 +55,37 @@ const Courses = () => {
     };
     recentDiscussions();
   }, [c_id]);
-
   // Toggle module visibility
   const toggleModule = (m_id) => {
     if (expandedModule === m_id) {
       setExpandedModule(null); // Collapse if already expanded
     } else {
       setExpandedModule(m_id); // Expand selected module
+    }
+  };
+  // /user/engagement/module
+
+ 
+
+  // Function to handle marking the module as completed
+  const markAsCompleted = async (m_id) => {
+    try {
+      const user_id = 1; // Replace with actual user ID from your authentication context
+      const course_id = c_id; // Replace with actual course ID
+      const response = await axios.post('http://localhost:5001/api/engagement/module', {
+        user_id,
+        course_id,
+        module_id: m_id,
+        time_spent: 120, // Replace with actual time spent if you track it
+      });
+
+      if (response.status === 201) {
+        // Optionally, update UI or notify user
+        alert('Module marked as completed successfully!');
+      }
+    } catch (error) {
+      console.error('Error marking module as completed:', error);
+      alert('Failed to mark module as completed. Please try again.');
     }
   };
 
@@ -115,6 +140,12 @@ const Courses = () => {
                           {material.content}
                         </a>
                       </p>
+                      <button 
+                        className={styles.completeButton} 
+                        onClick={() => markAsCompleted(material.m_id)}
+                      >
+                        Mark as Completed
+                      </button>
                     </div>
                   )}
                 </div>
@@ -125,11 +156,14 @@ const Courses = () => {
           </div>
         </div>
 
+        <div>
+          {console.log(localStorage.getItem('role'))}
+          {localStorage.getItem('role') == "admin"? <button>+ Add Module</button>: " "}
+        </div>
+  
         {/* FEEDBACKS */}
         <div className={styles.feedbacksTableContainer}>
           <h1>FEEDBACKS</h1>
-          {console.log(localStorage.getItem('role'))}
-          {localStorage.getItem('role') == "admin"? <button>Add course</button>: " "}
           <table className={styles.feedbacksTable}>
             <thead>
               <tr>

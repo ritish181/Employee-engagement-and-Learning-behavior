@@ -107,7 +107,7 @@ const Admin = () => {
         </div>
 
         <div className={styles.courseCardContainer}>
-          <h1>COURSES</h1>
+          <h1>COURSES</h1> <br />
           {courses.map(course => (
             <div className={styles.card} key={course.c_id}>
               <h3>{course.c_name}</h3>
@@ -116,6 +116,11 @@ const Admin = () => {
           ))}
         </div>
 
+        <div>
+          {console.log(localStorage.getItem('role'))}
+          {localStorage.getItem('role') == "admin"? <button onClick={()=>navigate("/admin/create")}>+ Add Course</button>: " "}
+        </div>
+          
         <div className={styles.feedbacksTableContainer}>
           <h1>FEEDBACKS</h1>
           <table className={styles.feedbacksTable}>
