@@ -87,10 +87,10 @@ const createCourse = async (req, res) => {
 
 // Engagement controller
 const userEngagement = async (req, res) => {
-  const { user_id, course_id, module_id, time_spent } = req.body;
+  const { u_id, c_id, m_id, time_spent } = req.body;
 
   // Validate the request body
-  if (!user_id || !course_id || !module_id || typeof time_spent !== 'number') {
+  if (!u_id || !c_id || !m_id || typeof time_spent !== 'number') {
     return res.status(400).json({ message: 'Missing or invalid parameters.' });
   }
 
@@ -98,10 +98,9 @@ const userEngagement = async (req, res) => {
     // Create a new engagement record in the database
     const engagement = await prisma.engagement.create({
       data: {
-        timeSpent: time_spent,
-        u_id: user_id,
-        c_id: parseInt(course_id),
-        m_id: parseInt(module_id),
+        u_id: parseInt(u_id),
+        c_id: parseInt(c_id),
+        m_id: parseInt(m_id),
         module_completed: true, // Default value for module_completed
       },
     });
@@ -116,6 +115,34 @@ const userEngagement = async (req, res) => {
   }
 };
 
+const isModuleCompleted = async(req, res) =>{
+  const { u_id, c_id, m_id } = req.body;
+  if (!u_id || !c_id || !m_id) {
+    return res.status(400).json({ message: 'Missing or invalid parameters.' });
+  }
+
+  try {
+    // Check if the module is marked as completed in the Engagement table
+    const engagement = await prisma.engagement.findFirst({
+      where: {
+        u_id: parseInt(u_id),
+        c_id: parseInt(c_id),
+        m_id: parseInt(m_id),
+        module_completed: true
+      }
+    });
+    console.log(engagement)
+    if (engagement) {
+      return res.status(200).json({ completed: true, message: 'Module has been completed.' });
+    } else {
+      return res.status(200).json({ completed: false, message: 'Module has not been completed yet.' });
+    }
+  } catch (error) {
+    console.error('Error checking module completion status:', error);
+    return res.status(500).json({ message: 'An error occurred while checking the module status.' });
+  }
+}
+
 
 
 module.exports = {
@@ -123,5 +150,6 @@ module.exports = {
   getCourseById,
   createCourse,
   userEngagement,
-  getEnrolledCourses
+  getEnrolledCourses,
+  isModuleCompleted,
 };
