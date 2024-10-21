@@ -117,7 +117,7 @@ const Register = () => {
         </form>
         <p className={styles.p}>
           Already registered?{' '}
-          <button onClick={handleLoginRedirect}>Login here</button>
+          <button className = {styles.login} onClick={handleLoginRedirect}>Login here</button>
         </p>
       </div>
     </div>

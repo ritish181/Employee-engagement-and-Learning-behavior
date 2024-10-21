@@ -1,29 +1,44 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { animateScroll as scroll, scroller } from 'react-scroll'; // Import scroll utilities
 import styles from './styles/adminHome.module.css';
+
+// Import necessary chart components from Recharts
+import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
 
 const Admin = () => {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true); // Loading state
+  const [loading, setLoading] = useState(true);
   const [courses, setCourses] = useState([]);
   const [numEmployees, setNumEmployees] = useState(0);
   const [numRequests, setNumRequests] = useState(0);
   const [recentFeedbacks, setRecentFeedbacks] = useState([]);
   const [recentDiscussions, setRecentDiscussions] = useState([]);
 
+  // Chart Data (dummy example for now)
+  const chartData = [
+    { name: 'Courses', value: courses.length },
+    { name: 'Employees', value: numEmployees },
+    { name: 'Requests', value: numRequests },
+  ];
+
+  const barChartData = [
+    { name: 'Courses', value: courses.length },
+    { name: 'Employees', value: numEmployees },
+    { name: 'Requests', value: numRequests },
+  ];
+
   useEffect(() => {
     const token = localStorage.getItem('token');
-    console.log(token, "token");
     if (!token) {
       navigate('/login', { replace: true }); // Redirect to login if no token is found
     } else {
-      // Only proceed if the token is present
       fetchData();
     }
   }, [navigate]);
 
   const fetchData = async () => {
-    // Fetch courses
+    // Fetch courses, employees, requests, etc. (existing code)
     try {
       const response = await fetch('http://localhost:5001/api/courses');
       const data = await response.json();
@@ -32,7 +47,6 @@ const Admin = () => {
       console.error('Error fetching courses:', error);
     }
 
-    // Fetch employee and request counts
     try {
       const employeeResponse = await fetch('http://localhost:5001/api/employees');
       const employeeData = await employeeResponse.json();
@@ -45,7 +59,6 @@ const Admin = () => {
       console.error('Error fetching employee/request count:', error);
     }
 
-    // Fetch recent feedbacks
     try {
       const feedbackResponse = await fetch('http://localhost:5001/api/feedbacks');
       const feedbackData = await feedbackResponse.json();
@@ -56,7 +69,6 @@ const Admin = () => {
       console.error('Error fetching recent feedbacks:', error);
     }
 
-    // Fetch recent discussions
     try {
       const discussionResponse = await fetch('http://localhost:5001/api/discussions');
       const discussionData = await discussionResponse.json();
@@ -67,61 +79,91 @@ const Admin = () => {
       console.error('Error fetching recent discussions:', error);
     }
 
-    setLoading(false); // Set loading to false after data fetching
+    setLoading(false);
   };
 
-  // If loading, show a loading message or spinner
   if (loading) {
     return <div>Loading...</div>;
   }
+
+  // Function to scroll to top
+  const scrollToTop = () => {
+    scroll.scrollToTop();
+  };
+
+  // Function to scroll to a specific section
+  const scrollToSection = (sectionName) => {
+    scroller.scrollTo(sectionName, {
+      smooth: true,
+      offset: -70, // Offset the scroll for fixed nav
+      duration: 500,
+    });
+  };
 
   return (
     <div className={styles.adminPage}>
       <nav className={styles.navbar}>
         <h2>Admin Panel</h2>
         <ul className={styles.navLinks}>
-          <li><Link to="/adminHome">Dashboard</Link></li>
-          <li><Link to="/courses">Courses</Link></li>
+          <li><Link to="/adminHome">Home</Link></li>
+          <li><Link to="#" onClick={() => scrollToSection('dashboardSection')}>Dashboard</Link></li>
           <li><Link to="/requests">Requests</Link></li>
-          <li><Link to="#">Feedback</Link></li>
-          <li><Link to="#">Discussions</Link></li>
-          <li><Link to="/login" onClick={() => {localStorage.removeItem('token'); localStorage.removeItem('role')}}>Logout</Link></li>
+          <li><Link to="#" onClick={() => scrollToSection('feedbacksSection')}>Feedback</Link></li>
+          <li><Link to="#" onClick={() => scrollToSection('discussionsSection')}>Discussions</Link></li>
+          <li><Link to="/login" onClick={() => { localStorage.removeItem('token'); localStorage.removeItem('role'); }}>Logout</Link></li>
         </ul>
       </nav>
-
+      
       <main className={styles.content}>
-        <h2>Home</h2>
-        <div className={styles.cardContainer}>
-          <div className={styles.card}>
-            <h3>Number of Courses</h3>
-            <p>{courses.length}</p>
-          </div>
-          <div className={styles.card}>
-            <h3>Number of Employees</h3>
-            <p>{numEmployees}</p>
-          </div>
-          <div className={styles.card}>
-            <h3>Number of Requests</h3>
-            <p>{numRequests}</p>
-          </div>
-        </div>
-
-        <div className={styles.courseCardContainer}>
-          <h1>COURSES</h1> <br />
-          {courses.map(course => (
-            <div className={styles.card} key={course.c_id}>
-              <h3>{course.c_name}</h3>
-              <Link to={`/courses/${course.c_id}`} className={styles.courseLink}>View Course</Link>
+        {/* Dashboard Section */}
+        <div id="dashboardSection" className={styles.dashboardSection}>
+          <h2>Dashboard</h2>
+          <div className={styles.cardContainer}>
+            <div className={styles.card}>
+              <h3>Number of Courses</h3>
+              <p>{courses.length}</p>
             </div>
-          ))}
+            <div className={styles.card}>
+              <h3>Number of Employees</h3>
+              <p>{numEmployees}</p>
+            </div>
+            <div className={styles.card}>
+              <h3>Number of Requests</h3>
+              <p>{numRequests}</p>
+            </div>
+          </div>
+
+          {/* Chart Section */}
+          <div className={styles.chartSection}>
+            <h3>Dashboard</h3>
+            {/* Pie Chart */}
+            <ResponsiveContainer width="100%" height={300}>
+              <PieChart>
+                <Pie data={chartData} dataKey="value" nameKey="name" outerRadius={100} fill="#8884d8" label>
+                  {chartData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.name === 'Courses' ? '#00C49F' : entry.name === 'Employees' ? '#FFBB28' : '#FF8042'} />
+                  ))}
+                </Pie>
+                <Tooltip />
+                <Legend />
+              </PieChart>
+            </ResponsiveContainer>
+
+            {/* Bar Chart */}
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={barChartData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Bar dataKey="value" fill="#8884d8" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
         </div>
 
-        <div>
-          {console.log(localStorage.getItem('role'))}
-          {localStorage.getItem('role') == "admin"? <button onClick={()=>navigate("/admin/create")}>+ Add Course</button>: " "}
-        </div>
-          
-        <div className={styles.feedbacksTableContainer}>
+        {/* Scroll to Feedback Section */}
+        <div id="feedbacksSection" className={styles.feedbacksTableContainer}>
           <h1>FEEDBACKS</h1>
           <table className={styles.feedbacksTable}>
             <thead>
@@ -153,7 +195,8 @@ const Admin = () => {
           </table>
         </div>
 
-        <div>
+        {/* Scroll to Discussions Section */}
+        <div id="discussionsSection" className={styles.discussionsSection}>
           <h1>Recent Discussions</h1>
           <table className={styles.discussionTable}>
             <thead>
@@ -179,7 +222,8 @@ const Admin = () => {
           </table>
         </div>
 
-        <button onClick={() => window.scrollTo(0, 0)}>Back to top</button>
+        {/* Scroll to Top Button */}
+        <button onClick={scrollToTop}>Scroll to Top</button>
       </main>
     </div>
   );

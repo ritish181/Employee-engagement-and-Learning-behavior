@@ -83,7 +83,7 @@ const Login = () => {
           <button type="submit">Login</button>
           <p>
             New User?{' '}
-            <button type="button" onClick={handleRegisterRedirect}>Register</button>
+            <button className = {styles.register} type="button" onClick={handleRegisterRedirect}>Register</button>
           </p>
         </form>
       </div>

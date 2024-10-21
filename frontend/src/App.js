@@ -1,4 +1,6 @@
 import React from "react";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Register from "./Components/Register";
 import Login from "./Components/Login";
@@ -40,6 +42,7 @@ const App = () => {
           element={<ProtectedRoute element={<Courses />} />} 
         />
       </Routes>
+      <ToastContainer />
     </BrowserRouter>
   );
 };
