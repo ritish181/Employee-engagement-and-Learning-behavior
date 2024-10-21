@@ -190,8 +190,11 @@
 }
 
 button {
-  margin-top: 20px;
-  padding: 10px 15px;
+  width: 5rem;
+  justify-content: center;
+  align-items: center;
+  margin: 20px auto;
+  padding: 10px auto;
   background-color: #28a745;
   color: white;
   border: none;

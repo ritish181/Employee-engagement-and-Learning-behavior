@@ -1,8 +1,8 @@
-
-
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Navigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import styles from '../Components/styles/createCourse.module.css';
 
 const CreateCourse = () => {
   const [courseName, setCourseName] = useState('');
@@ -48,23 +48,30 @@ const CreateCourse = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Create Course</h2>
+    <form onSubmit={handleSubmit} className={styles.form}>
+      <h2 className={styles.heading}>Create Course</h2>
       
-      <label>
+      <label className={styles.label}>
         Course Name:
-        <input type="text" value={courseName} onChange={(e) => setCourseName(e.target.value)} required />
+        <input 
+          type="text" 
+          value={courseName} 
+          onChange={(e) => setCourseName(e.target.value)} 
+          required 
+          className={styles.input}
+        />
       </label>
 
-      <h3>Learning Materials</h3>
+      <h3 className={styles.subheading}>Learning Materials</h3>
       {learningMaterials.map((material, index) => (
-        <div key={index}>
+        <div key={index} className={styles.materialItem}>
           <input
             type="text"
             placeholder="Title"
             value={material.title}
             onChange={(e) => handleLearningMaterialChange(index, 'title', e.target.value)}
             required
+            className={styles.materialInput}
           />
           <input
             type="text"
@@ -72,6 +79,7 @@ const CreateCourse = () => {
             value={material.content}
             onChange={(e) => handleLearningMaterialChange(index, 'content', e.target.value)}
             required
+            className={styles.materialInput}
           />
           <input
             type="text"
@@ -79,20 +87,22 @@ const CreateCourse = () => {
             value={material.type}
             onChange={(e) => handleLearningMaterialChange(index, 'type', e.target.value)}
             required
+            className={styles.materialInput}
           />
         </div>
       ))}
-      <button type="button" onClick={addLearningMaterial}>Add Learning Material</button>
+      <button type="button" onClick={addLearningMaterial} className={styles.button}>Add Learning Material</button>
 
-      <h3>Quizzes</h3>
+      <h3 className={styles.subheading}>Quizzes</h3>
       {quizzes.map((quiz, index) => (
-        <div key={index}>
+        <div key={index} className={styles.quizItem}>
           <input
             type="text"
             placeholder="Question"
             value={quiz.question}
             onChange={(e) => handleQuizChange(index, 'question', e.target.value)}
             required
+            className={styles.quizInput}
           />
           <input
             type="text"
@@ -100,6 +110,7 @@ const CreateCourse = () => {
             value={quiz.optionA}
             onChange={(e) => handleQuizChange(index, 'optionA', e.target.value)}
             required
+            className={styles.quizInput}
           />
           <input
             type="text"
@@ -107,6 +118,7 @@ const CreateCourse = () => {
             value={quiz.optionB}
             onChange={(e) => handleQuizChange(index, 'optionB', e.target.value)}
             required
+            className={styles.quizInput}
           />
           <input
             type="text"
@@ -114,6 +126,7 @@ const CreateCourse = () => {
             value={quiz.optionC}
             onChange={(e) => handleQuizChange(index, 'optionC', e.target.value)}
             required
+            className={styles.quizInput}
           />
           <input
             type="text"
@@ -121,6 +134,7 @@ const CreateCourse = () => {
             value={quiz.optionD}
             onChange={(e) => handleQuizChange(index, 'optionD', e.target.value)}
             required
+            className={styles.quizInput}
           />
           <input
             type="text"
@@ -128,12 +142,18 @@ const CreateCourse = () => {
             value={quiz.correct_option}
             onChange={(e) => handleQuizChange(index, 'correct_option', e.target.value)}
             required
+            className={styles.quizInput}
           />
         </div>
       ))}
-      <button type="button" onClick={addQuiz}>Add Quiz</button>
+      <button type="button" onClick={addQuiz} className={styles.button}>Add Quiz</button>
       
-      <button type="submit" >Create Course</button>
+      <button type="submit" className={styles.submitButton}>Create Course</button>
+      <br />
+      <center className={styles.homeBtn}>
+        <Link to= "/adminHome" className={styles.homeBtn}>Back to Home</Link>
+      </center>
+      
     </form>
   );
 };

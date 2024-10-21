@@ -45,7 +45,9 @@ const EmployeeHome = () => {
       try {
         const response = await fetch('http://localhost:5001/api/courses');  // Assuming your API endpoint is '/api/courses'
         const data = await response.json();
+        
         setCourses(data);  // Set the fetched courses to state
+        console.log(courses)
       } catch (error) {
         console.error('Error fetching courses:', error);
       }
@@ -64,7 +66,21 @@ const EmployeeHome = () => {
         const data = await response.json();
         
         console.log('Fetched Enrolled Courses:', data); // Log the fetched data
+        
         setEnrolledCourses(data); // Set state with the fetched data
+        
+        for(var j = 0; j < enrolledCourses.length; j++) {
+          const updatedCourses = courses.map(course => {
+            
+            if (course.c_id === enrolledCourses[j].c_id) {console.log("asd")
+              return { ...course, enrolled: true }; // Update the enrolled status
+            }
+            return course;
+          });
+    
+          setCourses(updatedCourses);
+          
+        }
       } catch (error) {
         console.error('Error fetching courses:', error);
       }
@@ -89,11 +105,12 @@ const EmployeeHome = () => {
     try {
       const employeeResponse = await fetch('http://localhost:5001/api/employees');
       const employeeData = await employeeResponse.json();
-      setNumEmployees(employeeData.count);
+      setNumEmployees(employeeData.length -1);
       
-      const requestResponse = await fetch('http://localhost:5001/api/requests');
+      const requestResponse = await fetch('http://localhost:5001/api/register');
       const requestData = await requestResponse.json();
-      setNumRequests(requestData.count);
+      console.log(requestData.length);
+      setNumRequests(requestData.length);
     } catch (error) {
       console.error('Error fetching employee/request count:', error);
     }
@@ -310,7 +327,8 @@ const EmployeeHome = () => {
             </tbody>
           </table>
         </div>
-
+        
+        
         {/* Scroll to Discussions Section */}
         <div id="discussionsSection" className={styles.discussionsSection}>
           <h1>Recent Discussions</h1>
@@ -339,7 +357,10 @@ const EmployeeHome = () => {
         </div>
 
         {/* Scroll to Top Button */}
-        <button onClick={scrollToTop}>Scroll to Top</button>
+        <div className="btn">
+          <center><button className = "toTop" onClick={scrollToTop}>Scroll to Top</button></center>
+          
+        </div>
       </main>
     </div>
   );

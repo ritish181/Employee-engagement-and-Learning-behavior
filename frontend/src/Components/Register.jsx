@@ -113,7 +113,10 @@ const Register = () => {
               </option>
             ))}
           </select>
-          <button className={`${styles.button} ${styles.submitButton}`} type="submit">Register</button>
+          <center>
+            <button className={`${styles.button} ${styles.submitButton}`} type="submit">Register</button>
+          </center>
+          
         </form>
         <p className={styles.p}>
           Already registered?{' '}

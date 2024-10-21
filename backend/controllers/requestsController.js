@@ -49,3 +49,5 @@ exports.getAdminDetails = async (req,res) =>{
   console.log(req.user.userId, req.user.role)
   res.status(201).json("only returns if user is logged in")
 }
+
+

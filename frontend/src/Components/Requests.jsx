@@ -1,6 +1,9 @@
 // src/components/Requests.jsx
 import React, { useEffect, useState } from 'react';
 import styles from './styles/requests.module.css'; // Import the module CSS
+import { animateScroll as scroll, scroller } from 'react-scroll'; // Import scroll utilities
+
+import { Link } from 'react-router-dom';
 
 const Requests = () => {
   const [requests, setRequests] = useState([]);
@@ -56,9 +59,30 @@ const Requests = () => {
     }
   };
 
+  // Function to scroll to a specific section
+  const scrollToSection = (sectionName) => {
+    scroller.scrollTo(sectionName, {
+      smooth: true,
+      offset: -70, // Offset the scroll for fixed nav
+      duration: 500,
+    });
+  };
+
   return (
     <div className={styles.requestsPage}>
-      <h2>User Requests</h2>
+      <nav className={styles.navbar}>
+        <h2>Admin Panel</h2>
+        <ul className={styles.navLinks}>
+          <li><Link to="/adminHome">Home</Link></li>
+          <li><Link to="/adminHome" onClick={() => scrollToSection('dashboardSection')}>Dashboard</Link></li>
+          <li><Link to="#">Requests</Link></li>
+          <li><Link to="/adminHome" onClick={() => scrollToSection('feedbacksSection')}>Feedback</Link></li>
+          <li><Link to="#" onClick={() => scrollToSection('discussionsSection')}>Discussions</Link></li>
+          <li><Link to="/login" onClick={() => { localStorage.removeItem('token'); localStorage.removeItem('role'); }}>Logout</Link></li>
+        </ul>
+      </nav>
+    <br />
+      <center><h2>User Requests</h2></center>
       <div className={styles.requestsBox}>
         <table>
           <thead>

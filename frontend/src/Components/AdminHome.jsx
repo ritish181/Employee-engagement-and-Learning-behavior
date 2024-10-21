@@ -5,8 +5,10 @@ import styles from './styles/adminHome.module.css';
 
 // Import necessary chart components from Recharts
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
+import CreateCourse from './CreateCourse';
 
 const Admin = () => {
+  const [u_id, setu_id] = useState()
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [courses, setCourses] = useState([]);
@@ -27,6 +29,24 @@ const Admin = () => {
     { name: 'Employees', value: numEmployees },
     { name: 'Requests', value: numRequests },
   ];
+
+  // Fetch courses from the API
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const response = await fetch('http://localhost:5001/api/courses');  // Assuming your API endpoint is '/api/courses'
+        const data = await response.json();
+        
+        setCourses(data);  // Set the fetched courses to state
+        console.log(courses)
+      } catch (error) {
+        console.error('Error fetching courses:', error);
+      }
+    };
+
+    fetchCourses();
+    setu_id(localStorage.getItem("u_id"))
+  }, []);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -50,11 +70,11 @@ const Admin = () => {
     try {
       const employeeResponse = await fetch('http://localhost:5001/api/employees');
       const employeeData = await employeeResponse.json();
-      setNumEmployees(employeeData.count);
+      setNumEmployees(employeeData.length);
       
-      const requestResponse = await fetch('http://localhost:5001/api/requests');
+      const requestResponse = await fetch('http://localhost:5001/api/register');
       const requestData = await requestResponse.json();
-      setNumRequests(requestData.count);
+      setNumRequests(requestData.length);
     } catch (error) {
       console.error('Error fetching employee/request count:', error);
     }
@@ -99,6 +119,7 @@ const Admin = () => {
       duration: 500,
     });
   };
+
 
   return (
     <div className={styles.adminPage}>
@@ -159,6 +180,22 @@ const Admin = () => {
                 <Bar dataKey="value" fill="#8884d8" />
               </BarChart>
             </ResponsiveContainer>
+          </div>
+        </div>
+        {/* COURSES CARDS AND ENROLLED COURSES */}
+        <div id="coursesSection">
+          <h1>COURSES</h1> <br/>
+          <div className={styles.courseCardContainer}>
+            
+            {courses.map(course => (
+              <div className={styles.card} key={course.c_id}>
+                <h3>{course.c_name}</h3>
+                <Link to={`/courses/${course.c_id}`} className={styles.courseLink}>View Course</Link>
+              </div>
+            ))}
+          </div>
+          <div className={styles.createCourses}>
+            <Link className={styles.createCourses} to="/admin/create">add course</Link>
           </div>
         </div>
 
@@ -223,7 +260,10 @@ const Admin = () => {
         </div>
 
         {/* Scroll to Top Button */}
-        <button onClick={scrollToTop}>Scroll to Top</button>
+        <center>
+          <button onClick={scrollToTop}>Scroll to Top</button>
+        </center>
+        
       </main>
     </div>
   );

@@ -22,6 +22,17 @@ const registerUser = async (req, res) => {
   }
 };
 
+const employeeCount = async(req, res) => {
+  try {
+    const employees = await prisma.register.findMany();
+    res.status(200).json(employees);
+  } catch (error) {
+    console.error("Error fetching courses:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
 module.exports = {
   registerUser,
+  employeeCount,
 };

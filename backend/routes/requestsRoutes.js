@@ -16,4 +16,5 @@ router.delete('/register/:u_id/reject', requestsController.rejectRequest);
 
 router.get('/protected',verifyToken,requestsController.getAdminDetails);
 
+
 module.exports = router;
