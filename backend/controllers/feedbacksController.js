@@ -59,11 +59,12 @@ exports.courseFeedbacks = async (req, res) => {
 
 // POST: Submit feedback
 exports.submitFeedback = async (req, res) => {
-  const { u_id, c_id, remarks, rating } = req.body;
+  let { u_id, c_id, remarks, rating } = req.body;
+  rating = Number(rating)
   console.log(u_id);
   console.log(c_id);
   console.log(remarks);
-  console.log(rating);
+  console.log(typeof rating);
 
   try {
     // Validate input
@@ -92,10 +93,11 @@ exports.submitFeedback = async (req, res) => {
       data: {
         remarks,
         rating,
-        register: { connect: { u_id: parseInt(u_id) } },  // Connect the feedback to the user
-        course: { connect: { c_id: parseInt(c_id) } },    // Connect the feedback to the course
+        register: { connect: { u_id: Number(u_id) } },  // Connect the feedback to the user
+        course: { connect: { c_id: Number(c_id) } },    // Connect the feedback to the course
       },
     });
+    
 
     res.status(201).json({ message: 'Feedback submitted successfully', feedback });
   } catch (error) {

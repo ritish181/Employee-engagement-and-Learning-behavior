@@ -65,3 +65,46 @@ exports.getCourseDiscussions = async (req, res) => {
     await prisma.$disconnect(); // Ensure Prisma client is disconnected after the request
   }
 };
+
+
+exports.submitDiscussions = async(req, res) => {
+
+  let { u_id, c_id, comment } = req.body;
+  console.log(u_id);
+  console.log(c_id);
+  console.log(comment);
+
+  try {
+    // Validate input
+    if (!u_id || !c_id || !comment) {
+      return res.status(400).json({ error: 'All fields are required' });
+    }
+
+    // Check if the user and course exist
+    const user = await prisma.register.findUnique({ where: { u_id: parseInt(u_id) } });
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const course = await prisma.course.findUnique({ where: { c_id: parseInt(c_id) } });
+    if (!course) {
+      return res.status(404).json({ error: 'Course not found' });
+    }
+
+    // Create feedback in the database
+    const feedback = await prisma.discussionParticipation.create({
+      data: {
+        comment,
+        register: { connect: { u_id: Number(u_id) } },  // Connect the feedback to the user
+        course: { connect: { c_id: Number(c_id) } },    // Connect the feedback to the course
+      },
+    });
+    
+
+    res.status(201).json({ message: 'Discussion submitted successfully', feedback });
+  } catch (error) {
+    console.error('Error submitting discussion:', error);
+    res.status(500).json({ error: 'Failed to submit discussion' });
+  }
+
+}

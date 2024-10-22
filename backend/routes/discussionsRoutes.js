@@ -5,6 +5,7 @@ const discussionsController = require('../controllers/discussionsController');
 
 // Route to get all discussions
 router.get('/discussions', discussionsController.getAllDiscussions);
+router.post('/discussions', discussionsController.submitDiscussions);
 router.get('/discussions/:c_id', discussionsController.getCourseDiscussions);
 
 // // Route to create a new discussion

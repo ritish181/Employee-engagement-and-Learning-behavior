@@ -10,6 +10,7 @@ const Courses = () => {
   const [course, setCourse] = useState(null);
   const [feedbacks, setRecentFeedbacks] = useState([]);
   const [discussions, setRecentDiscussions] = useState([]);
+  const [feedbackRating, setFeedbackRating] = useState(0);
   const [feedbackText, setFeedbackText] = useState('');
   const [discussionText, setDiscussionText] = useState('');
   const [expandedModule, setExpandedModule] = useState(null);
@@ -85,8 +86,8 @@ const Courses = () => {
 
   // Handle feedback submission
   const handleFeedbackSubmit = async () => {
-    if (!feedbackText) {
-      toast("Feedback cannot be empty");
+    if ((!feedbackText) || (!feedbackRating)){
+      toast("Fields cannot be empty");
       return;
     }
 
@@ -95,11 +96,12 @@ const Courses = () => {
         u_id: u_id,
         c_id: c_id,
         remarks: feedbackText,
-        rating: 5,
+        rating: feedbackRating,
       });
 
       if (response.status === 201) {
         setFeedbackText(''); // Clear the feedback form
+        setFeedbackRating(0); //clear rating
         toast('Feedback submitted successfully!');
 
         // Fetch the updated feedbacks
@@ -123,7 +125,7 @@ const Courses = () => {
       const response = await axios.post('http://localhost:5001/api/discussions', {
         u_id: u_id,
         c_id: c_id,
-        discussion: discussionText,
+        comment: discussionText,
       });
 
       if (response.status === 201) {
@@ -237,7 +239,14 @@ const Courses = () => {
               ))}
             </tbody>
           </table>
+
+          {/* Submitting Feedback */}
           <h2>Submit Feedback</h2>
+          <input onChange={(e) => setFeedbackRating(e.target.value)} 
+            value={feedbackRating} type="number" 
+            placeholder='Rating' /> 
+          <br />
+
           <textarea
             value={feedbackText}
             onChange={(e) => setFeedbackText(e.target.value)}
